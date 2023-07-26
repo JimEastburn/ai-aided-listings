@@ -2,7 +2,7 @@ import { Configuration, OpenAIApi } from "openai";
 
 export default async function handler(req, res) {
   const configuration = new Configuration({
-    apiKey: "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",
+    apiKey: "",
   });
 
   const openai = new OpenAIApi(configuration);

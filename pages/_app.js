@@ -19,7 +19,7 @@ function MyApp({ Component, pageProps }) {
 
   if (gPT3error) return <div>Failed to load GPT3 data</div>
   if (gPT3IsLoading) return <div>Loading GPT3 data...</div>
-  if (!gPT3data) return null
+  if (!gPT3data) return null  
 
   
 

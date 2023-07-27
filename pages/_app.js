@@ -4,6 +4,7 @@ import useSWR from 'swr'
 import Head from 'next/head'
 import Image from 'next/image'
 import { useState} from 'react'
+import { useRouter } from 'next/router';
 
 async function fetcher(url){
   const res = await fetch(url);
@@ -12,23 +13,22 @@ async function fetcher(url){
 
 function MyApp({ Component, pageProps }) {
   const [searchSentence, setSearchSentence] = useState('');
-  const [searchResults, setSearchResults] = useState('');
-
   const [shouldFetch, setShouldFetch] = useState(false);
+  const router = useRouter();
 
   function handleClick() {
     setShouldFetch(true);
   }
 
   const handleChange = (event) => {
-    console.log('handleChange: ', event.target.value)
     setSearchSentence(event.target.value);
-    console.log('searchSentence: ', searchSentence)
   };
 
+  function handleViewAllClick() {
+    router.push(`https://www.autolist.com/listings#make=${gPT3data.answer.make}&model=${gPT3data.answer.model}&year_max=${gPT3data.answer.year}&year_min=${gPT3data.answer.year}`);
+  }
 
 
-  //const { data:gPT3data, error:gPT3error, isLoading:gPT3IsLoading } = useSWR([`/api/gpt3`], fetcher);
   const { data:gPT3data, error:gPT3error, isLoading:gPT3IsLoading } = useSWR(shouldFetch?[`/api/gpt3?searchSentence=${searchSentence}`]:null, fetcher);
   
   const { data:autolistData, error:autolistError, isLoading:autolistIsLoading } = useSWR(() => ( 
@@ -71,7 +71,7 @@ function MyApp({ Component, pageProps }) {
         Here are some popular prompts that you can try:  
       </p>
       <p className={styles.description}>
-        "Im looking for a 2019 Camry in New Jersey"
+        "Im looking for a 2019 Toyota Camry"
       </p>
 
 
@@ -95,6 +95,7 @@ function MyApp({ Component, pageProps }) {
         </div> */}
         
       </div>
+      <button  onClick={handleViewAllClick}>View All</button>
     </main>
 
     <footer className={styles.footer}>
@@ -111,32 +112,12 @@ function MyApp({ Component, pageProps }) {
       />
       </div>
       <button  onClick={handleClick}>Fetch</button>
-     
-          
         </div>
     </footer>
     <div>
 </div>
   </div>
-    
-
-    
   )
-
-//   return (
-    
- 
-// )
 }
 
 export default MyApp
-
-
-//   return (
-//     <div>
-//       {autolistData.records[0].make_and_model}
-//     </div>
-//   )
-// }
-
-// export default MyApp
